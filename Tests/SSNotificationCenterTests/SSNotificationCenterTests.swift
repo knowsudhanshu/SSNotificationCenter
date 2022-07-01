@@ -2,10 +2,18 @@ import XCTest
 @testable import SSNotificationCenter
 
 final class SSNotificationCenterTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(SSNotificationCenter().text, "Hello, World!")
+    
+    func testAddObserver() {
+        SSNotificationCenter.shared.addObserver(self, notificationName: "Test") { name, obj in
+            print("notification posted")
+        }
+        
+        SSNotificationCenter.shared.addObserver(self, notificationName: "Test") { name, obj in
+            print("notification posted 2")
+        }
+        
+        let count = SSNotificationCenter.shared.observerCount(for: "Test")
+        
+        XCTAssert(count == 2)
     }
 }

@@ -12,6 +12,19 @@ public class SSNotificationCenter {
     
     private var notificationRepository: [String: [String: [(String, Any) -> Void]]]
     
+    func observerCount(for notificationName: String) -> Int {
+        var count: Int = 0
+        for (_, notificationData) in notificationRepository {
+            for (name, closures) in notificationData {
+                guard name == notificationName else { continue }
+                
+                for _ in closures {
+                    count += 1
+                }
+            }
+        }
+        return count
+    }
     
     private init() {
         // To restrict initialization
@@ -27,11 +40,11 @@ public class SSNotificationCenter {
         
         let className = String(describing: inputClass)
         
-        if let notificationData = notificationRepository[className], var notificationFuncArr = notificationData[notificationName] {
-            notificationFuncArr.append(closure)
+        if let notificationData = notificationRepository[className], var _ = notificationData[notificationName] {
+            notificationRepository[className]?[notificationName]?.append(closure)
         } else if let notificationData = notificationRepository[className]  {
-            if var notificationFuncArr = notificationData[notificationName] {
-                notificationFuncArr.append(closure)
+            if var _ = notificationData[notificationName] {
+                notificationRepository[className]?[notificationName]?.append(closure)
             } else {
                 notificationRepository[className]?[notificationName] = [closure]
             }
