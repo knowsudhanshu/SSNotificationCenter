@@ -1,6 +1,6 @@
 public class SSNotificationCenter {
     
-    static let shared: SSNotificationCenter = SSNotificationCenter()
+    public static let shared: SSNotificationCenter = SSNotificationCenter()
     
     /*
      [ClassName:
